@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AquaCray Farms – Premium Nutrition</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-dark: #0a0c08;
+      --bg-mid: #111409;
+      --bg-card: #141710;
+      --gold: #c9a84c;
+      --gold-light: #e2c97e;
+      --gold-dim: #7a5f28;
+      --rust: #b84a2e;
+      --rust-light: #d4644a;
+      --cream: #f2ead8;
+      --cream-dim: #c8bfa6;
+      --white: #ffffff;
+      --green-dark: #1a2310;
+      --border: rgba(201,168,76,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ─── SCROLL ANIMATIONS ───────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+
+    /* ─── NAV ─────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 60px;
+      background: rgba(10,12,8,0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+      transition: transform 0.3s ease;
+    }
+    .logo:hover { transform: scale(1.05); }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: var(--gold);
+      clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); line-height: 1.2; }
+    .logo-text span { display: block; font-size: 10px; font-weight: 400; letter-spacing: 0.35em; color: var(--gold); }
+
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--cream-dim); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 400; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-cta {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Jost', sans-serif;
+      font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 10px 28px; cursor: pointer;
+      border-radius: 50px; /* Rounded */
+      transition: all 0.3s ease;
+    }
+    .nav-cta:hover { 
+      background: var(--gold); 
+      color: var(--bg-dark); 
+      box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
+    }
+
+    /* ─── HERO ────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse 60% 80% at 70% 50%, rgba(26,35,16,0.9) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 20% 80%, rgba(184,74,46,0.12) 0%, transparent 60%),
+        linear-gradient(160deg, #0a0c08 30%, #141e0c 60%, #0f1a08 100%);
+      display: flex; align-items: center;
+      padding: 120px 60px 80px;
+      position: relative; overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 300px;
+      background: linear-gradient(to top, rgba(10,12,8,0.8), transparent);
+      z-index: 1;
+    }
+
+    .hero-bubbles {
+      position: absolute; right: 10%; top: 10%;
+      width: 500px; height: 500px; pointer-events: none;
+    }
+    .bubble {
+      position: absolute; border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(201,168,76,0.3), rgba(201,168,76,0.05));
+      border: 1px solid rgba(201,168,76,0.2);
+      animation: float linear infinite;
+    }
+    .bubble:nth-child(1) { width:12px; height:12px; left:60%; top:80%; animation-duration:4s; animation-delay:0s; }
+    .bubble:nth-child(2) { width:8px; height:8px; left:40%; top:70%; animation-duration:5s; animation-delay:0.5s; }
+    .bubble:nth-child(3) { width:16px; height:16px; left:75%; top:90%; animation-duration:6s; animation-delay:1s; }
+    .bubble:nth-child(4) { width:6px; height:6px; left:55%; top:85%; animation-duration:3.5s; animation-delay:1.5s; }
+    .bubble:nth-child(5) { width:20px; height:20px; left:30%; top:75%; animation-duration:7s; animation-delay:0.2s; }
+    .bubble:nth-child(6) { width:10px; height:10px; left:80%; top:60%; animation-duration:4.5s; animation-delay:2s; }
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 0.8; }
+      50% { transform: translateY(-120px) scale(1.1); opacity: 0.5; }
+      100% { transform: translateY(-240px) scale(0.8); opacity: 0; }
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 560px; animation: fadeUp 1s ease both; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 40px; height: 1px; background: var(--gold);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 6vw, 82px);
+      font-weight: 900; line-height: 1.0;
+      color: var(--white); margin-bottom: 8px;
+    }
+    .hero h1 em {
+      font-style: italic; color: var(--gold);
+      font-weight: 400;
+    }
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px; font-style: italic; font-weight: 300;
+      color: var(--cream-dim); margin-bottom: 28px; line-height: 1.6;
+    }
+
+    .hero-stats {
+      display: flex; gap: 32px; margin-bottom: 44px;
+    }
+    .hero-stat { text-align: left; }
+    .hero-stat .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px; font-weight: 700; color: var(--gold);
+      line-height: 1;
+    }
+    .hero-stat .label { font-size: 11px; letter-spacing: 0.1em; color: var(--cream-dim); text-transform: uppercase; margin-top: 4px; }
+    .stat-divider { width: 1px; background: var(--border); align-self: stretch; }
+
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    
+    /* Rounded & Animated Buttons */
+    .btn-primary {
+      background: var(--gold);
+      color: var(--bg-dark);
+      border: none;
+      font-family: 'Jost', sans-serif;
+      font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;
+      padding: 16px 36px; cursor: pointer;
+      border-radius: 50px; /* Rounded */
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+      text-decoration: none; display: inline-block;
+      box-shadow: 0 4px 15px rgba(201, 168, 76, 0.2);
+    }
+    .btn-primary:hover { 
+      background: var(--gold-light); 
+      transform: translateY(-3px); 
+      box-shadow: 0 8px 25px rgba(201, 168, 76, 0.4);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      color: var(--cream);
+      border: 1px solid rgba(242,234,216,0.3);
+      font-family: 'Jost', sans-serif;
+      font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 16px 36px; cursor: pointer;
+      border-radius: 50px; /* Rounded */
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+      text-decoration: none; display: inline-block;
+    }
+    .btn-outline:hover { 
+      border-color: var(--cream); 
+      transform: translateY(-3px); 
+      box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
+    }
+
+    .hero-visual {
+      position: absolute; right: 0; top: 0; bottom: 0;
+      width: 55%; z-index: 1;
+      background: none;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-visual::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 250px; z-index: 2;
+      background: linear-gradient(to right, #0a0c08, transparent);
+      pointer-events: none;
+    }
+
+    .hero-visual::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 200px; z-index: 2;
+      background: linear-gradient(to top, #0a0c08, transparent);
+      pointer-events: none;
+    }
+
+    .crayfish-art {
+      width: 460px; height: 460px; position: relative;
+      opacity: 0.15;
+      animation: gentlePulse 6s ease-in-out infinite;
+    }
+    @keyframes gentlePulse {
+      0%,100% { transform: scale(1) rotate(-5deg); }
+      50% { transform: scale(1.03) rotate(-3deg); }
+    }
+
+    /* ─── TRUST BAR ───────────────────────────────── */
+    .trust-bar {
+      background: var(--bg-mid);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 60px;
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 20px;
+    }
+    .trust-item { display: flex; align-items: center; gap: 14px; }
+    .trust-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border: 1px solid var(--border);
+      border-radius: 50%; /* Rounded Icons */
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 18px;
+    }
+    .trust-item h4 { font-size: 13px; font-weight: 500; color: var(--white); letter-spacing: 0.05em; margin-bottom: 2px; }
+    .trust-item p { font-size: 11px; color: var(--cream-dim); letter-spacing: 0.04em; }
+
+    /* ─── ABOUT ───────────────────────────────────── */
+    .about {
+      padding: 120px 60px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+      position: relative;
+    }
+    .about::before {
+      content: '';
+      position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+      width: 4px; height: 160px; background: var(--gold);
+      opacity: 0.3;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .section-label {
+      font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::before {
+      content: ''; display: block; width: 30px; height: 1px; background: var(--gold);
+    }
+
+    .about h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 3.5vw, 52px); font-weight: 700; line-height: 1.15;
+      color: var(--white); margin-bottom: 24px;
+    }
+    .about p {
+      font-size: 15px; line-height: 1.8; color: var(--cream-dim); margin-bottom: 28px;
+    }
+
+    .check-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+    .check-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 14px; color: var(--cream); line-height: 1.5;
+    }
+    .check-list li::before {
+      content: '✓';
+      color: var(--gold); font-size: 13px;
+      width: 22px; height: 22px; flex-shrink: 0;
+      border: 1px solid var(--gold-dim);
+      border-radius: 50%; /* Rounded Checkmarks */
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+
+    .about-signature {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 22px; font-weight: 300;
+      color: var(--rust-light);
+    }
+
+    .about-right { display: flex; flex-direction: column; gap: 20px; }
+    .about-img-wrap {
+      position: relative;
+      background: var(--green-dark);
+      border: 1px solid var(--border);
+      border-radius: 16px; /* Premium Soft Corners */
+      overflow: hidden; height: 360px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .about-img-wrap::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 50%);
+    }
+
+    .stats-grid { 
+      display: grid; grid-template-columns: repeat(3,1fr); 
+      border: 1px solid var(--border); 
+      border-radius: 12px; 
+      overflow: hidden;
+    }
+    .stat-cell {
+      padding: 28px 20px; text-align: center;
+      border-right: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+    .stat-cell:last-child { border-right: none; }
+    .stat-cell .big { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: var(--gold); line-height: 1; }
+    .stat-cell .label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream-dim); margin-top: 6px; }
+
+    /* ─── PRODUCTS ────────────────────────────────── */
+    .products {
+      padding: 120px 60px;
+      background: var(--bg-mid);
+      position: relative; overflow: hidden;
+    }
+    .products::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+
+    .section-header { text-align: center; margin-bottom: 64px; }
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 4vw, 56px); font-weight: 700;
+      color: var(--white); margin-bottom: 16px;
+    }
+    .section-header p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; font-style: italic; font-weight: 300;
+      color: var(--cream-dim); max-width: 520px; margin: 0 auto;
+    }
+
+    .products-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .product-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; /* Soft Corners */
+      padding: 0; overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: pointer; position: relative;
+    }
+    .product-card:hover { 
+      border-color: var(--gold); 
+      transform: translateY(-8px); 
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(201, 168, 76, 0.1);
+    }
+
+    .product-img {
+      height: 260px;
+      background: linear-gradient(160deg, #1a2310 0%, #0e1808 100%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .product-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, var(--bg-card) 100%);
+    }
+    .product-img img {
+      transition: transform 0.6s ease;
+    }
+    .product-card:hover .product-img img {
+      transform: scale(1.05); /* Image zoom on hover */
+    }
+
+    .product-body { padding: 28px 28px 32px; }
+    .product-tag {
+      display: inline-block;
+      border: 1px solid var(--gold-dim);
+      border-radius: 30px; /* Pill tag */
+      color: var(--gold);
+      font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 6px 14px; margin-bottom: 14px;
+    }
+    .product-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 700; color: var(--white); margin-bottom: 10px;
+    }
+    .product-card p { font-size: 13px; color: var(--cream-dim); line-height: 1.7; margin-bottom: 20px; }
+    .product-specs { display: flex; gap: 12px; flex-wrap: wrap; }
+    .spec-pill {
+      font-size: 11px; letter-spacing: 0.08em;
+      color: var(--cream-dim); background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 30px; /* Pill style */
+      padding: 4px 12px;
+    }
+
+    .products-cta { text-align: center; margin-top: 56px; }
+
+    /* ─── FEATURES / SCIENCE ──────────────────────── */
+    .science {
+      padding: 120px 60px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+
+    .feature-list { display: flex; flex-direction: column; gap: 0; }
+    .feature-item {
+      display: flex; gap: 24px; padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+    .feature-item:hover { padding-left: 12px; border-bottom-color: var(--gold-dim); }
+    .feature-item:first-child { padding-top: 0; }
+    .feature-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px; font-weight: 900; color: rgba(201,168,76,0.12);
+      line-height: 1; flex-shrink: 0; width: 48px;
+      transition: color 0.3s;
+    }
+    .feature-item:hover .feature-num { color: rgba(201,168,76,0.4); transform: scale(1.1); }
+    .feature-item h4 { font-size: 15px; font-weight: 500; color: var(--white); margin-bottom: 6px; letter-spacing: 0.05em; }
+    .feature-item p { font-size: 13px; color: var(--cream-dim); line-height: 1.7; }
+
+    .science-visual {
+      background: var(--green-dark);
+      border: 1px solid var(--border);
+      border-radius: 20px; /* Soft Corners */
+      padding: 60px 40px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; position: relative; overflow: hidden;
+      box-shadow: inset 0 0 60px rgba(0,0,0,0.5);
+    }
+    .science-visual::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 200px; height: 200px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.08), transparent 70%);
+    }
+    .big-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 120px; font-weight: 900; color: var(--gold);
+      line-height: 1; opacity: 0.9;
+    }
+    .big-num span { font-size: 60px; }
+    .science-visual h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-style: italic; font-weight: 300;
+      color: var(--cream); margin: 8px 0 20px;
+    }
+    .science-visual p {
+      font-size: 13px; color: var(--cream-dim); line-height: 1.7;
+      max-width: 280px;
+    }
+    .divider-gold { width: 60px; height: 2px; background: var(--gold); margin: 24px auto; border-radius: 2px; }
+    .science-badge {
+      margin-top: 36px;
+      display: flex; flex-direction: column; gap: 12px; width: 100%;
+    }
+    .badge-row {
+      display: flex; align-items: center; justify-content: space-between;
+      border: 1px solid var(--border); padding: 14px 18px;
+      border-radius: 8px; /* Rounded rows */
+      background: rgba(0,0,0,0.2);
+    }
+    .badge-row .badge-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream-dim); }
+    .badge-row .badge-val { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--gold); }
+
+    /* ─── TESTIMONIALS ────────────────────────────── */
+    .testimonials {
+      padding: 100px 60px;
+      background: var(--bg-mid);
+      position: relative; overflow: hidden;
+    }
+    .testimonials::before {
+      content: '"';
+      position: absolute; left: 40px; top: 40px;
+      font-family: 'Playfair Display', serif;
+      font-size: 300px; font-weight: 900; color: rgba(201,168,76,0.04);
+      line-height: 1; pointer-events: none;
+    }
+
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 64px; }
+    .testi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; /* Soft Corners */
+      padding: 36px 32px;
+      position: relative; overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .testi-card:hover { 
+      border-color: var(--gold-dim); 
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    .testi-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px; background: var(--gold); opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .testi-card:hover::before { opacity: 1; }
+
+    .stars { color: var(--gold); font-size: 14px; letter-spacing: 2px; margin-bottom: 20px; }
+    .testi-card blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px; font-style: italic; font-weight: 300;
+      color: var(--cream); line-height: 1.7; margin-bottom: 28px;
+    }
+    .testi-author { display: flex; align-items: center; gap: 14px; }
+    .avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--green-dark); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 16px; color: var(--gold);
+    }
+    .testi-author h5 { font-size: 13px; font-weight: 500; color: var(--white); }
+    .testi-author p { font-size: 11px; color: var(--cream-dim); margin-top: 2px; }
+
+    /* ─── CTA BANNER ──────────────────────────────── */
+    .cta-banner {
+      background: var(--green-dark);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin: 0 60px 80px;
+      border-radius: 24px; /* Distinct Pill Shape Container */
+      padding: 80px 60px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+      position: relative; overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .cta-banner::before {
+      content: '';
+      position: absolute; right: -100px; top: -100px;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.06), transparent 70%);
+    }
+    .cta-banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 3vw, 48px); font-weight: 700;
+      color: var(--white); line-height: 1.2; margin-bottom: 16px;
+    }
+    .cta-banner h2 em { font-style: italic; color: var(--gold); }
+    .cta-banner p { font-size: 15px; color: var(--cream-dim); line-height: 1.7; margin-bottom: 32px; }
+    .cta-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    .contact-info { display: flex; flex-direction: column; gap: 16px; }
+    .contact-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 20px; border: 1px solid var(--border);
+      border-radius: 12px; /* Soft Corners */
+      background: rgba(0,0,0,0.2);
+      transition: all 0.3s;
+    }
+    .contact-row:hover { border-color: var(--gold-dim); transform: translateX(-5px); }
+    .contact-icon { color: var(--gold); font-size: 16px; width: 20px; text-align: center; }
+    .contact-row span { font-size: 13px; color: var(--cream-dim); }
+
+    /* ─── FOOTER ──────────────────────────────────── */
+    footer {
+      background: var(--bg-dark);
+      border-top: 1px solid var(--border);
+      padding: 60px 60px 40px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px; margin-bottom: 48px;
+    }
+    .footer-brand p {
+      font-size: 13px; color: var(--cream-dim); line-height: 1.8;
+      margin: 20px 0 28px; max-width: 280px;
+    }
+    .social-links { display: flex; gap: 10px; }
+    .social-link {
+      width: 38px; height: 38px; border: 1px solid var(--border);
+      border-radius: 50%; /* Perfect circles */
+      display: flex; align-items: center; justify-content: center;
+      color: var(--cream-dim); font-size: 13px; text-decoration: none;
+      transition: all 0.3s;
+    }
+    .social-link:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
+
+    .footer-col h4 {
+      font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col a {
+      text-decoration: none; font-size: 13px; color: var(--cream-dim);
+      transition: color 0.3s;
+    }
+    .footer-col a:hover { color: var(--cream); padding-left: 4px; } /* Subtle nudge */
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-bottom p { font-size: 12px; color: rgba(200,191,166,0.5); letter-spacing: 0.05em; }
+
+    /* ─── RESPONSIVE ──────────────────────────────── */
+    @media (max-width: 1024px) {
+      nav { padding: 16px 30px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 30px 60px; }
+      .hero-visual { display: none; }
+      .about, .science { grid-template-columns: 1fr; gap: 48px; padding: 80px 30px; }
+      .trust-bar { grid-template-columns: repeat(2,1fr); padding: 28px 30px; }
+      .products { padding: 80px 30px; }
+      .products-grid { grid-template-columns: 1fr; gap: 16px; }
+      .testimonials { padding: 80px 30px; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .cta-banner { grid-template-columns: 1fr; padding: 60px 30px; margin: 0 30px 60px; }
+      footer { padding: 48px 30px 32px; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+    }
+
+
+
+    /* ─── PURCHASE MODAL ──────────────────────────── */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10, 12, 8, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 9999; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    
+    .modal-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 90%; max-width: 550px; padding: 30px;
+      max-height: 90vh; /* IMPORTANT: Keeps modal inside the screen */
+      display: flex; flex-direction: column; /* Lets us control internal scrolling */
+      position: relative;
+      transform: translateY(40px) scale(0.95);
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 40px rgba(201, 168, 76, 0.03);
+    }
+    .modal-overlay.active .modal-content { transform: translateY(0) scale(1); border-color: var(--gold-dim); }
+
+    .modal-header { flex-shrink: 0; } /* Prevents header from shrinking */
+    .modal-checkout-bar { flex-shrink: 0; }
+
+
+    .modal-close {
+      position: absolute; top: 20px; right: 24px;
+      background: transparent; border: none;
+      color: var(--cream-dim); font-size: 32px; font-weight: 300;
+      cursor: pointer; transition: color 0.3s, transform 0.3s;
+    }
+    .modal-close:hover { color: var(--gold); transform: rotate(90deg); }
+
+    .modal-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px; color: var(--white);
+      margin-bottom: 6px;
+    }
+    .modal-header p { font-size: 14px; color: var(--cream-dim); margin-bottom: 32px; }
+
+    .modal-products {
+      display: flex; flex-direction: column; gap: 16px;
+      overflow-y: auto; /* Adds scrollbar here instead of the whole screen */
+      padding-right: 10px; margin-bottom: 24px;
+      flex-grow: 1; /* Takes up remaining safe space */
+    }
+    .modal-products::-webkit-scrollbar { width: 6px; }
+    .modal-products::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 10px; }
+    .modal-products::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 10px; }
+
+    .modal-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px; border: 1px solid var(--border);
+      border-radius: 12px; background: rgba(255,255,255,0.02);
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .modal-item:hover { border-color: var(--gold-dim); background: rgba(201,168,76,0.05); }
+    .modal-item img {
+      width: 64px; height: 64px; object-fit: cover;
+      border-radius: 8px; background: var(--green-dark);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .modal-item-info { flex: 1; }
+    .modal-item-info h4 { color: var(--white); font-size: 15px; margin-bottom: 4px; font-weight: 500; }
+    .modal-item-info p { color: var(--gold); font-size: 14px; font-weight: 600; letter-spacing: 0.05em; }
+    .modal-add-btn {
+      background: transparent; border: 1px solid var(--gold);
+      color: var(--gold); font-family: 'Jost', sans-serif;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 8px 16px; border-radius: 30px; cursor: pointer; transition: all 0.3s;
+    }
+    .modal-add-btn:hover { background: var(--gold); color: var(--bg-dark); }
+
+    .modal-checkout-bar {
+      border-top: 1px solid var(--border); padding-top: 24px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .modal-total-row { display: flex; justify-content: space-between; align-items: center; }
+    .modal-total-label { font-size: 13px; color: var(--cream-dim); text-transform: uppercase; letter-spacing: 0.1em; }
+    .modal-total-price { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--white); font-weight: 700; }
+    .btn-checkout { width: 100%; text-align: center; }
+    
+    @media (max-width: 1024px) {
+      .modal-content { padding: 30px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <a href="#" class="logo">
+      <div class="logo-icon"></div>
+      <div class="logo-text">
+        AquaCray
+        <span>Farms</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#science">Science</a></li>
+      <li><a href="#feeding">Feeding Guide</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-cta open-modal-btn">Shop Now</button>
+  </nav>
+
+  <section class="hero reveal active">
+    <div class="hero-bubbles">
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+    </div>
+    <div class="hero-visual">
+  <img src="images/topbackground.png" alt="Crayfish" style="
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.85;
+  ">
+</div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">Premium Nutrition</div>
+      <h1>Stronger,<br>Healthier<br><em>Crayfish</em></h1>
+      <p class="hero-sub">Scientifically formulated feeds crafted to accelerate growth, enhance shell development, and bring out the vibrant health your crayfish deserve.</p>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num">40%<span style="font-size:20px">+</span></div>
+          <div class="label">Protein Content</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="hero-stat">
+          <div class="num">PHILIPPINES</div>
+          <div class="label">Made In</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="hero-stat">
+          <div class="num">All</div>
+          <div class="label">Life Stages</div>
+        </div>
+      </div>
+
+      <div class="hero-btns">
+        <a href="#" class="btn-primary open-modal-btn">Shop Feeds</a>
+        <a href="#science" class="btn-outline">Learn the Science</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="trust-bar reveal">
+    <div class="trust-item">
+      <div class="trust-icon">⚗️</div>
+      <div>
+        <h4>High Protein Formula</h4>
+        <p>40%+ premium protein for faster growth</p>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🚚</div>
+      <div>
+        <h4>Fast Shipping</h4>
+        <p>Fresh, vacuum-sealed &amp; delivered quickly</p>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">📈</div>
+      <div>
+        <h4>Proven Results</h4>
+        <p>Trusted by professional breeders</p>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🌿</div>
+      <div>
+        <h4>Clean Ingredients</h4>
+        <p>No fillers, hormones, or artificial additives</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="about" id="about">
+    <div class="about-left reveal">
+      <div class="section-label">About AquaCray Farms</div>
+      <h2>Nutrition That<br>Makes a Difference</h2>
+      <p>We're passionate about crayfish health. Our research-driven formulas combine high-quality proteins, essential minerals, and natural astaxanthin to support development — from juveniles to breeding adults.</p>
+
+      <ul class="check-list">
+        <li>Accelerates growth &amp; improves feed conversion</li>
+        <li>Enhances shell hardness and vibrant coloration</li>
+        <li>Supports immunity and long-term health</li>
+        <li>Sustainably sourced, responsibly made</li>
+      </ul>
+
+      <p class="about-signature">Quality you can see in every feeding.</p>
+    </div>
+
+    <div class="about-right reveal delay-1">
+      <div class="about-img-wrap">
+  <img src="images/crayfish.png" alt="Crayfish Feed Product" style="width:100%;height:100%;object-fit:cover;">
+</div>
+      <div class="stats-grid">
+        <div class="stat-cell">
+          <div class="big">40%<span style="font-size:18px">+</span></div>
+          <div class="label">Protein Content</div>
+        </div>
+        <div class="stat-cell">
+          <div class="big">PHILIPPINES</div>
+          <div class="label">Made In</div>
+        </div>
+        <div class="stat-cell">
+          <div class="big">100%</div>
+          <div class="label">Clean Ingredients</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="products" id="products">
+    <div class="section-header reveal">
+      <div class="section-label" style="justify-content:center">Our Products</div>
+      <h2>Premium Feeds for Every Stage</h2>
+      <p>From tiny hatchlings to market-ready crayfish, we have the perfect feed for every growth stage.</p>
+    </div>
+
+    <div class="products-grid"> 
+      <div class="product-card reveal delay-1">
+       <div class="product-img">
+  <img src="images/prestarter.png" alt="Growth Pellets" style="width:100%;height:100%;object-fit:cover;">
+</div>
+        <div class="product-body">
+          <span class="product-tag">High Protein Blend</span>
+          <h3>Growth Pellets</h3>
+          <p>Our flagship formula for fast growth and development. Perfect from juvenile to adult crayfish. High-protein daily diet for optimal growth.</p>
+          <div class="product-specs">
+            <span class="spec-pill">36% Protein</span>
+            <span class="spec-pill">4–12mm Size</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal delay-2">
+       <div class="product-img">
+  <img src="images/egglayer.png" alt="Growth Pellets" style="width:100%;height:100%;object-fit:cover;">
+</div>
+        <div class="product-body">
+          <span class="product-tag">Fine Crumble</span>
+          <h3>Hatchery Starter</h3>
+          <p>Specially designed for baby crayfish and hatcheries. Easy to digest for optimal survival and early growth stages.</p>
+          <div class="product-specs">
+            <span class="spec-pill">45% Protein</span>
+            <span class="spec-pill">0.5–2mm Size</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal delay-3">
+        <div class="product-img">
+          <img src="images/productcray.png" alt="Product Cray" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="product-body">
+          <span class="product-tag">Natural Astaxanthin</span>
+          <h3>Color Enhance</h3>
+          <p>Enhances natural red color while providing complete nutrition. For show-quality crayfish. Natural astaxanthin formula.</p>
+          <div class="product-specs">
+            <span class="spec-pill">28% Protein</span>
+            <span class="spec-pill">2–8mm Size</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="products-cta reveal">
+      <a href="#" class="btn-outline open-modal-btn">View All Products</a>
+    </div>
+  </section>
+
+  <section class="science" id="science">
+    <div class="reveal">
+      <div class="section-label">The Science</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(32px,3.5vw,52px);font-weight:700;color:var(--white);line-height:1.15;margin-bottom:40px;">What Sets Our<br>Formula Apart</h2>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-num">01</div>
+          <div>
+            <h4>Advanced Protein Sourcing</h4>
+            <p>We source premium fish meal and invertebrate proteins with optimal amino acid profiles specifically matched to crayfish metabolic needs.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-num">02</div>
+          <div>
+            <h4>Shell Mineral Complex</h4>
+            <p>Precise calcium, phosphorus, and trace mineral ratios support rapid, dense exoskeleton development during molting cycles.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-num">03</div>
+          <div>
+            <h4>Natural Astaxanthin</h4>
+            <p>Derived from natural sources, our astaxanthin enhances pigmentation and serves as a powerful antioxidant supporting immune function.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-num">04</div>
+          <div>
+            <h4>Probiotic Stability</h4>
+            <p>Live beneficial bacteria cultures survive through our cold-press manufacturing process, supporting gut health and nutrient absorption.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="science-visual reveal delay-1">
+      <div class="big-num">40<span>%+</span></div>
+      <h3>Premium Protein Content</h3>
+      <div class="divider-gold"></div>
+      <p>Significantly higher than standard aquaculture feeds, delivering the nutrition crayfish need for exceptional growth performance.</p>
+
+      <div class="science-badge">
+        <div class="badge-row">
+          <span class="badge-label">Formulation Method</span>
+          <span class="badge-val">Cold-Press</span>
+        </div>
+        <div class="badge-row">
+          <span class="badge-label">Quality Standard</span>
+          <span class="badge-val">PHILIPPINES Grade A</span>
+        </div>
+        <div class="badge-row">
+          <span class="badge-label">Shelf Life</span>
+          <span class="badge-val">18 Months</span>
+        </div>
+        <div class="badge-row">
+          <span class="badge-label">Artificial Additives</span>
+          <span class="badge-val">Zero</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="section-header reveal">
+      <div class="section-label" style="justify-content:center">Trusted By Keepers</div>
+      <h2>What Our Customers Say</h2>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testi-card reveal delay-1">
+        <div class="stars">★★★★★</div>
+        <blockquote>"The difference was clear within weeks. Better growth, deeper color, and excellent survival rates. AquaCray Farms is now our only choice."</blockquote>
+        <div class="testi-author">
+          <div class="avatar">M</div>
+          <div>
+            <h5>Marcus Johnson</h5>
+            <p>Johnson Crayfish Farms, Louisiana</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal delay-2">
+        <div class="stars">★★★★★</div>
+        <blockquote>"The best results I've seen — my crayfish have never looked healthier. The shell hardness improvement alone made it worth every penny."</blockquote>
+        <div class="testi-author">
+          <div class="avatar">S</div>
+          <div>
+            <h5>Sarah Chen</h5>
+            <p>Aquatic Hobby Breeder, California</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal delay-3">
+        <div class="stars">★★★★★</div>
+        <blockquote>"I've tried every brand on the market. Nothing comes close to the growth rates I get with AquaCray Farms. My hatchery survival rate jumped 30%."</blockquote>
+        <div class="testi-author">
+          <div class="avatar">R</div>
+          <div>
+            <h5>Roberto Fuentes</h5>
+            <p>Fuentes Aquaculture, Texas</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="text-align:center;margin-top:56px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;">
+      <div style="display:flex;gap:-8px">
+        <div class="avatar" style="width:36px;height:36px;font-size:13px;border-color:var(--gold-dim)">A</div>
+        <div class="avatar" style="width:36px;height:36px;font-size:13px;border-color:var(--gold-dim);margin-left:-10px">B</div>
+        <div class="avatar" style="width:36px;height:36px;font-size:13px;border-color:var(--gold-dim);margin-left:-10px">C</div>
+        <div class="avatar" style="width:36px;height:36px;font-size:13px;border-color:var(--gold-dim);margin-left:-10px">D</div>
+      </div>
+      <div style="text-align:left">
+        <div style="color:var(--gold);font-size:13px;letter-spacing:0.05em;font-weight:500">Trusted by 2,000+ Crayfish Keepers</div>
+        <div style="color:var(--cream-dim);font-size:12px;margin-top:2px">Hatcheries, hobbyists &amp; professional farms nationwide</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-banner reveal" id="contact">
+    <div>
+      <div class="section-label">Get Started</div>
+      <h2>Ready to Grow<br><em>Better Crayfish?</em></h2>
+      <p>Join thousands of successful crayfish farmers who trust our premium feeds. Get expert nutrition support and grow with confidence.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn-primary open-modal-btn">Shop Now</a>
+        <a href="#" class="btn-outline">Contact Us</a>
+      </div>
+    </div>
+
+    <div class="contact-info">
+      <div class="contact-row">
+        <span class="contact-icon">📞</span>
+        <span>+1 (234) 567-8901</span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">✉️</span>
+        <span>info@crayfishfeeds.com</span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">🌐</span>
+        <span>www.crayfishfeeds.com</span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">🇺🇸</span>
+        <span>Proudly Made in the PHILIPPINES</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-top reveal">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <div class="logo-icon"></div>
+          <div class="logo-text">Crayfish <span>Feeds</span></div>
+        </a>
+        <p>Scientifically formulated feeds crafted to accelerate growth, enhance shell development, and bring out the vibrant health your crayfish deserve.</p>
+        <div class="social-links">
+          <a href="#" class="social-link">f</a>
+          <a href="#" class="social-link">in</a>
+          <a href="#" class="social-link">tw</a>
+          <a href="#" class="social-link">yt</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">Growth Pellets</a></li>
+          <li><a href="#">Hatchery Starter</a></li>
+          <li><a href="#">Color Enhance</a></li>
+          <li><a href="#">Breeding Formula</a></li>
+          <li><a href="#">Bulk Orders</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Science &amp; Research</a></li>
+          <li><a href="#">Feeding Guide</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Wholesale</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom reveal delay-1">
+      <p>© 2026 AquaCray Farms. All rights reserved.</p>
+      <p>Privacy Policy &nbsp;·&nbsp; Terms of Service</p>
+    </div>
+  </footer>
+
+
+  <div id="purchase-modal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      
+      <div class="modal-header">
+        <h2>Premium Feeds</h2>
+        <p>Select your formula below. Free shipping on orders over $50.</p>
+      </div>
+
+      <div class="modal-products">
+        <div class="modal-item">
+          <img src="images/prestarter.png" alt="Growth Pellets">
+          <div class="modal-item-info">
+            <h4>Growth Pellets (1kg)</h4>
+            <p>$24.99</p>
+          </div>
+          <button class="modal-add-btn">Add to Cart</button>
+        </div>
+        
+        <div class="modal-item">
+          <img src="images/egglayer.png" alt="Hatchery Starter">
+          <div class="modal-item-info">
+            <h4>Hatchery Starter (500g)</h4>
+            <p>$19.99</p>
+          </div>
+          <button class="modal-add-btn">Add to Cart</button>
+        </div>
+
+        <div class="modal-item">
+          <img src="images/productcray.png" alt="Color Enhance">
+          <div class="modal-item-info">
+            <h4>Color Enhance (1kg)</h4>
+            <p>$29.99</p>
+          </div>
+          <button class="modal-add-btn">Add to Cart</button>
+        </div>
+        
+        <div class="modal-item">
+          <img src="images/prestarter.png" alt="Bulk Pellets">
+          <div class="modal-item-info">
+            <h4>Pro Bulk Pack (10kg)</h4>
+            <p>$189.99</p>
+          </div>
+          <button class="modal-add-btn">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="modal-checkout-bar">
+        <div class="modal-total-row">
+          <span class="modal-total-label">Subtotal</span>
+          <span class="modal-total-price">$0.00</span>
+        </div>
+        <button class="btn-primary btn-checkout">Proceed to Secure Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const reveals = document.querySelectorAll(".reveal");
+
+      const revealOnScroll = function() {
+        const windowHeight = window.innerHeight;
+        const elementVisible = 100;
+
+        reveals.forEach((reveal) => {
+          const elementTop = reveal.getBoundingClientRect().top;
+          if (elementTop < windowHeight - elementVisible) {
+            reveal.classList.add("active");
+          }
+        });
+      };
+
+      // Initial check on page load
+      revealOnScroll();
+
+      // Trigger on scroll
+      window.addEventListener("scroll", revealOnScroll);
+
+      // Add simple glassmorphism effect to Nav on scroll
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) {
+          navbar.style.background = "rgba(10,12,8,0.95)";
+          navbar.style.boxShadow = "0 10px 30px rgba(0,0,0,0.5)";
+        } else {
+          navbar.style.background = "rgba(10,12,8,0.75)";
+          navbar.style.boxShadow = "none";
+        }
+      });
+
+
+      // MODAL LOGIC
+      const modal = document.getElementById('purchase-modal');
+      const openBtns = document.querySelectorAll('.open-modal-btn');
+      const closeBtn = document.querySelector('.modal-close');
+
+      // Open Modal
+      openBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault(); 
+          modal.classList.add('active');
+        });
+      });
+
+      // Close Modal on X click
+      closeBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+      });
+
+      // Close Modal when clicking outside the content box
+      window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('active');
+        }
+      });
+      
+      // Basic Add to cart calculation
+      const addBtns = document.querySelectorAll('.modal-add-btn');
+      const totalPriceEl = document.querySelector('.modal-total-price');
+      let currentTotal = 0.00;
+      
+      addBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          if (this.innerText === "Added!") return;
+          
+          this.innerText = "Added!";
+          this.style.background = "var(--gold)";
+          this.style.color = "var(--bg-dark)";
+          
+          const priceText = this.previousElementSibling.querySelector('p').innerText;
+          const priceNum = parseFloat(priceText.replace('$', ''));
+          
+          currentTotal += priceNum;
+          totalPriceEl.innerText = '$' + currentTotal.toFixed(2);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
